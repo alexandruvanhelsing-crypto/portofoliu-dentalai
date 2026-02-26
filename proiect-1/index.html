@@ -280,6 +280,9 @@
             justify-content: space-between;
             align-items: center;
             background: var(--gray);
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .calc-item:hover, .calc-item.active {
@@ -292,6 +295,9 @@
             width: 20px;
             height: 20px;
             accent-color: var(--primary);
+            pointer-events: none;
+            position: relative;
+            z-index: 2;
         }
 
         .service-info h4 {
@@ -753,16 +759,41 @@
         // Calculator Logic
         function toggleService(element) {
             const checkbox = element.querySelector('input[type="checkbox"]');
+            
+            // Toggle checkbox
             checkbox.checked = !checkbox.checked;
             
+            // Adaugă/eliminală clasa active
             if (checkbox.checked) {
                 element.classList.add('active');
             } else {
                 element.classList.remove('active');
             }
             
+            // Recalculează totalul
             calculateTotal();
         }
+
+        // FIX pentru mobil - touch events
+        document.addEventListener('DOMContentLoaded', function() {
+            const calcItems = document.querySelectorAll('.calc-item');
+            
+            calcItems.forEach(item => {
+                // Touch event pentru mobil
+                item.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleService(this);
+                });
+                
+                // Click pentru desktop
+                item.addEventListener('click', function(e) {
+                    if (e.pointerType !== 'touch') {
+                        toggleService(this);
+                    }
+                });
+            });
+        });
 
         function calculateTotal() {
             const checkboxes = document.querySelectorAll('.calc-item input[type="checkbox"]');
