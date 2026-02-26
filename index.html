@@ -6,7 +6,6 @@
     <title>Portofoliu Privat - Acces Restricționat</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -18,7 +17,6 @@
             justify-content: center;
             padding: 20px;
         }
-        
         .container {
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
@@ -30,9 +28,7 @@
             text-align: center;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        
         .logo { font-size: 3rem; margin-bottom: 20px; }
-        
         h1 {
             font-size: 1.8rem;
             margin-bottom: 10px;
@@ -40,9 +36,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
         .subtitle { color: #aaa; margin-bottom: 30px; font-size: 0.95rem; }
-        
         .warning {
             background: rgba(255, 107, 107, 0.1);
             border: 1px solid #ff6b6b;
@@ -52,7 +46,6 @@
             font-size: 0.85rem;
             color: #ff6b6b;
         }
-        
         input[type="password"] {
             width: 100%;
             padding: 15px;
@@ -65,9 +58,7 @@
             letter-spacing: 2px;
             margin-bottom: 15px;
         }
-        
         input[type="password"]:focus { outline: none; border-color: #00b4d8; }
-        
         button {
             width: 100%;
             padding: 15px;
@@ -80,13 +71,9 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-        
         button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,180,216,0.3); }
-        
         .error { color: #ff6b6b; margin-top: 15px; font-size: 0.9rem; display: none; }
-        
-        .projects-list { display: none; margin-top: 30px; }
-        
+        .projects-list { display: none; margin-top: 10px; }
         .project-card {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
@@ -94,11 +81,11 @@
             padding: 20px;
             margin: 15px 0;
             text-align: left;
+            transition: border-color 0.3s, transform 0.2s;
         }
-        
+        .project-card:hover { border-color: rgba(0,180,216,0.4); transform: translateY(-2px); }
         .project-card h3 { color: #90e0ef; margin-bottom: 5px; }
         .project-card p { color: #aaa; font-size: 0.9rem; margin-bottom: 15px; }
-        
         .view-btn {
             display: inline-block;
             padding: 8px 20px;
@@ -108,9 +95,34 @@
             border-radius: 6px;
             font-size: 0.9rem;
             border: 1px solid #00b4d8;
+            transition: all 0.2s;
         }
-        
         .view-btn:hover { background: #00b4d8; color: white; }
+        .badge-new {
+            display: inline-block;
+            background: linear-gradient(135deg, #c9a96e, #e8d5a3);
+            color: #1a1a2e;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 8px;
+            vertical-align: middle;
+            text-transform: uppercase;
+        }
+        .project-card.gold {
+            border-color: rgba(201,169,110,0.35);
+            background: rgba(201,169,110,0.05);
+        }
+        .project-card.gold:hover { border-color: rgba(201,169,110,0.7); }
+        .project-card.gold h3 { color: #c9a96e; }
+        .project-card.gold .view-btn {
+            background: rgba(201,169,110,0.15);
+            color: #c9a96e;
+            border-color: #c9a96e;
+        }
+        .project-card.gold .view-btn:hover { background: #c9a96e; color: #1a1a2e; }
     </style>
 </head>
 <body>
@@ -119,12 +131,10 @@
         <div class="logo">🦷</div>
         <h1>Portofoliu Privat</h1>
         <p class="subtitle">Acces restricționat - Introdu parola</p>
-        
         <div class="warning">
-            ⚠️ Atenție: Aceste proiecte sunt confidențiale. 
+            ⚠️ Atenție: Aceste proiecte sunt confidențiale.
             Este interzisă copierea sau distribuirea codului.
         </div>
-        
         <input type="password" id="passwordInput" placeholder="••••••" onkeypress="if(event.key==='Enter')checkPassword()">
         <button onclick="checkPassword()">Accesează Portofoliul</button>
         <div class="error" id="errorMsg">Parolă incorectă!</div>
@@ -134,28 +144,33 @@
         <div class="logo">✅</div>
         <h1>Proiecte Disponibile</h1>
         <p class="subtitle">Selectează un proiect</p>
-        
+
         <div class="project-card">
             <h3>🤖 DentalAI</h3>
             <p>Cabinet stomatologic cu asistent AI</p>
             <a href="./proiect-1/index.html" class="view-btn" target="_blank">Vezi Proiectul</a>
         </div>
-        
+
         <div class="project-card">
             <h3>🏗️ BuildMaster</h3>
             <p>Construcții inteligente cu calculator</p>
             <a href="./proiect-2/buildmaster/index.html" class="view-btn" target="_blank">Vezi Proiectul</a>
         </div>
-        
+
+        <div class="project-card gold">
+            <h3>✂️ AGERIS <span class="badge-new">NOU</span></h3>
+            <p>Salon de frumusețe — site bilingv RO/RU cu calculator prețuri, chat și hartă</p>
+            <a href="./proiect-3/ageris/index.html" class="view-btn" target="_blank">Vezi Proiectul</a>
+        </div>
+
         <button onclick="logout()" style="margin-top: 20px; background: transparent; border: 1px solid rgba(255,255,255,0.3);">Ieșire</button>
     </div>
 
     <script>
         const CORRECT_PASSWORD = "demo123";
-        
         function checkPassword() {
             const input = document.getElementById('passwordInput').value;
-            if(input === CORRECT_PASSWORD) {
+            if (input === CORRECT_PASSWORD) {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('projectsBox').style.display = 'block';
                 sessionStorage.setItem('portfolio_access', 'granted');
@@ -164,28 +179,23 @@
                 setTimeout(() => { document.getElementById('errorMsg').style.display = 'none'; }, 3000);
             }
         }
-        
         function logout() {
             sessionStorage.removeItem('portfolio_access');
             document.getElementById('loginBox').style.display = 'block';
             document.getElementById('projectsBox').style.display = 'none';
             document.getElementById('passwordInput').value = '';
         }
-        
-        if(sessionStorage.getItem('portfolio_access') === 'granted') {
+        if (sessionStorage.getItem('portfolio_access') === 'granted') {
             document.getElementById('loginBox').style.display = 'none';
             document.getElementById('projectsBox').style.display = 'block';
         }
-        
         document.addEventListener('contextmenu', e => e.preventDefault());
-        
         document.addEventListener('keydown', e => {
-            if(e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || (e.shiftKey && ['I','J','C'].includes(e.key))))) {
+            if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || (e.shiftKey && ['I','J','C'].includes(e.key))))) {
                 e.preventDefault();
                 alert('Inspecția codului este restricționată.');
             }
         });
     </script>
-
 </body>
 </html>
