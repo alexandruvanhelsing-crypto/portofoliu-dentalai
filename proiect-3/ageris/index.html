@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGERIS — Salon de Frumusețe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --black: #0d0d0d;
+  --dark: #1a1a1a;
+  --card: #222222;
+  --gold: #c9a96e;
+  --gold-light: #e8d5a3;
+  --gold-dark: #9a7a45;
+  --white: #f5f0eb;
+  --gray: #888;
+  --border: rgba(201,169,110,0.25);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── Custom Cursor ── */
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 99999;
+  transform: translate(-50%,-50%);
+  transition: width .2s, height .2s, background .2s;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 99998;
+  transform: translate(-50%,-50%);
+  transition: all .12s ease;
+  opacity: 0.6;
+}
+
+/* ── Language Toggle ── */
+.lang-toggle {
+  position: fixed; top: 22px; right: 24px; z-index: 9999;
+  display: flex; gap: 4px;
+  background: rgba(13,13,13,0.85);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 4px;
+  backdrop-filter: blur(12px);
+}
+.lang-btn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all .3s;
+  background: transparent;
+  color: var(--gray);
+}
+.lang-btn.active {
+  background: var(--gold);
+  color: var(--black);
+}
+
+/* ── Navigation ── */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 1000;
+  padding: 20px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(13,13,13,0.95) 0%, transparent 100%);
+  backdrop-filter: blur(8px);
+  transition: all .4s;
+}
+nav.scrolled {
+  background: rgba(13,13,13,0.97);
+  padding: 14px 60px;
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 4px;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo i { font-size: 1.2rem; }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  font-size: 0.72rem; letter-spacing: 2px; font-weight: 500;
+  color: var(--white); text-decoration: none; text-transform: uppercase;
+  position: relative; transition: color .3s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1px; background: var(--gold);
+  transition: width .3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { width: 100%; }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 1px; background: var(--white); transition: all .3s; }
+
+/* ── Hero ── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  position: relative;
+  background: var(--black);
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 60%, rgba(201,169,110,0.08) 0%, transparent 70%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(201,169,110,0.015) 40px,
+      rgba(201,169,110,0.015) 41px
+    );
+}
+.hero-lines {
+  position: absolute; inset: 0; overflow: hidden;
+}
+.hero-lines::before, .hero-lines::after {
+  content: '';
+  position: absolute;
+  border: 1px solid rgba(201,169,110,0.1);
+  border-radius: 50%;
+}
+.hero-lines::before {
+  width: 600px; height: 600px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.hero-lines::after {
+  width: 900px; height: 900px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.hero-content { position: relative; z-index: 2; padding: 0 20px; }
+
+.hero-scissors {
+  font-size: 2rem; color: var(--gold);
+  margin-bottom: 20px; display: block;
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(-10deg); }
+  50% { transform: translateY(-10px) rotate(10deg); }
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(4rem, 12vw, 9rem);
+  font-weight: 300;
+  letter-spacing: 12px;
+  line-height: 0.9;
+  color: var(--white);
+  margin-bottom: 16px;
+  animation: fadeUp 1.2s ease forwards;
+}
+.hero-title span { color: var(--gold); font-style: italic; }
+
+.hero-sub {
+  font-size: 0.72rem; letter-spacing: 6px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 50px;
+  animation: fadeUp 1.2s ease 0.2s backwards;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(30px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+.hero-divider {
+  width: 80px; height: 1px; background: var(--gold);
+  margin: 0 auto 50px;
+  animation: expand 1.5s ease 0.4s backwards;
+}
+@keyframes expand {
+  from { width: 0; opacity:0; }
+  to { width: 80px; opacity:1; }
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 16px 44px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all .4s;
+  position: relative; overflow: hidden;
+  animation: fadeUp 1.2s ease 0.5s backwards;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--gold);
+  transform: translateX(-101%);
+  transition: transform .4s cubic-bezier(.77,0,.18,1);
+}
+.btn-primary:hover { color: var(--black); }
+.btn-primary:hover::before { transform: translateX(0); }
+.btn-primary span { position: relative; z-index:1; }
+
+.scroll-hint {
+  position: absolute; bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--gray); font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase;
+  animation: fadeUp 1s ease 1s backwards;
+}
+.scroll-line {
+  width: 1px; height: 50px; background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0%,100% { transform: scaleY(1); opacity:1; }
+  50% { transform: scaleY(0.3); opacity:0.3; }
+}
+
+/* ── Sections common ── */
+section { padding: 100px 60px; }
+.section-label {
+  font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.section-divider {
+  width: 50px; height: 1px; background: var(--gold); margin-bottom: 50px;
+}
+
+/* ── Info Section ── */
+.info-section { background: var(--dark); }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1100px; margin: 0 auto; }
+.info-text p {
+  font-size: 0.9rem; line-height: 1.9; color: #bbb; margin-bottom: 20px;
+}
+.info-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.info-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 24px;
+  text-align: center;
+  transition: all .3s;
+}
+.info-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+.info-card i { font-size: 1.6rem; color: var(--gold); margin-bottom: 10px; display: block; }
+.info-card strong { display: block; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--white); margin-bottom: 4px; }
+.info-card span { font-size: 0.8rem; color: var(--gray); }
+
+/* ── Services ── */
+.services-section { background: var(--black); }
+.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; max-width: 1100px; margin: 0 auto; }
+.service-item {
+  background: var(--dark);
+  padding: 40px 36px;
+  border: 1px solid transparent;
+  transition: all .4s;
+  position: relative; overflow: hidden;
+}
+.service-item::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,169,110,0.05) 0%, transparent 60%);
+  opacity: 0; transition: opacity .4s;
+}
+.service-item:hover { border-color: var(--border); }
+.service-item:hover::before { opacity: 1; }
+.service-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem; font-weight: 300;
+  color: rgba(201,169,110,0.15);
+  line-height: 1; margin-bottom: 16px;
+}
+.service-item h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 400;
+  color: var(--white); margin-bottom: 10px;
+}
+.service-item p { font-size: 0.8rem; color: var(--gray); line-height: 1.7; }
+.service-icon { font-size: 1.4rem; color: var(--gold); margin-bottom: 14px; display: block; }
+
+/* ── Prices / Calculator ── */
+.prices-section { background: var(--dark); }
+.prices-inner { max-width: 1100px; margin: 0 auto; }
+.prices-layout { display: grid; grid-template-columns: 1fr 380px; gap: 60px; align-items: start; }
+
+.price-list { display: flex; flex-direction: column; gap: 0; }
+.price-label {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  cursor: pointer;
+  transition: all .2s;
+  gap: 16px;
+}
+.price-label:hover .price-name { color: var(--gold); }
+.price-check {
+  width: 20px; height: 20px; flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: transparent;
+  appearance: none; -webkit-appearance: none;
+  cursor: pointer; position: relative;
+  transition: all .2s;
+}
+.price-check:checked {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.price-check:checked::after {
+  content: '✓';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  color: var(--black); font-size: 11px; font-weight: bold;
+}
+.price-name { font-size: 0.85rem; color: var(--white); flex: 1; }
+.price-dots { flex: 1; border-bottom: 1px dotted rgba(255,255,255,0.1); margin: 0 12px; }
+.price-value { font-size: 0.85rem; color: var(--gold); white-space: nowrap; font-weight: 500; }
+
+.calc-result-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 40px 32px;
+  border-radius: 4px;
+  position: sticky; top: 100px;
+  text-align: center;
+}
+.calc-result-box .result-label {
+  font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 24px; display: block;
+}
+.calc-total {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem; font-weight: 300; color: var(--white);
+  line-height: 1; margin-bottom: 6px;
+}
+.calc-currency { font-size: 1.2rem; color: var(--gold); }
+.calc-note { font-size: 0.72rem; color: var(--gray); margin: 16px 0 28px; line-height: 1.6; }
+.calc-reset {
+  display: block; width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--gray); font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; transition: all .3s; margin-bottom: 12px;
+}
+.calc-reset:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── Program ── */
+.schedule-section { background: var(--black); }
+.schedule-inner { max-width: 700px; margin: 0 auto; text-align: center; }
+.schedule-grid { display: flex; flex-direction: column; gap: 0; margin-bottom: 50px; }
+.schedule-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.schedule-row:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+.schedule-day { font-size: 0.8rem; letter-spacing: 1px; color: #bbb; }
+.schedule-time { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--gold); }
+.schedule-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0;
+}
+
+/* ── Map ── */
+.map-section { background: var(--dark); padding: 100px 60px; }
+.map-inner { max-width: 1100px; margin: 0 auto; }
+.map-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.map-link {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative; cursor: pointer;
+  transition: border-color .3s;
+  text-decoration: none;
+}
+.map-link:hover { border-color: var(--gold); }
+.map-placeholder {
+  background: var(--card);
+  height: 320px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+}
+.map-placeholder i { font-size: 3rem; color: var(--gold); }
+.map-placeholder p { font-size: 0.8rem; color: var(--gray); letter-spacing: 1px; }
+.map-overlay {
+  position: absolute; inset: 0;
+  background: rgba(201,169,110,0.05);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .3s;
+}
+.map-link:hover .map-overlay { opacity: 1; }
+.map-overlay span {
+  background: var(--gold); color: var(--black);
+  padding: 10px 24px; font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif; font-weight: 600;
+}
+.contact-details { display: flex; flex-direction: column; gap: 28px; }
+.contact-item { display: flex; align-items: flex-start; gap: 20px; }
+.contact-icon { width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); }
+.contact-text strong { display: block; font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.contact-text p { font-size: 0.85rem; color: #bbb; line-height: 1.6; }
+.contact-text a { color: #bbb; text-decoration: none; display: block; }
+.contact-text a:hover { color: var(--gold); }
+
+/* ── Footer ── */
+footer {
+  background: var(--black);
+  border-top: 1px solid var(--border);
+  padding: 50px 60px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 24px;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem; letter-spacing: 5px; color: var(--gold);
+}
+.footer-copy { font-size: 0.72rem; color: var(--gray); letter-spacing: 1px; }
+.social-links { display: flex; gap: 14px; }
+.social-link {
+  width: 44px; height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray); text-decoration: none;
+  transition: all .3s; font-size: 1rem;
+}
+.social-link:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,169,110,0.08); }
+
+/* ── Chat Widget ── */
+.chat-toggle-btn {
+  position: fixed; bottom: 30px; right: 30px; z-index: 2000;
+  width: 58px; height: 58px;
+  background: var(--gold);
+  border: none; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 30px rgba(201,169,110,0.4);
+  transition: all .3s;
+  font-size: 1.3rem; color: var(--black);
+}
+.chat-toggle-btn:hover { transform: scale(1.1); background: var(--gold-light); }
+.chat-toggle-btn.open .fa-comments { display: none; }
+.chat-toggle-btn.open .fa-times { display: block !important; }
+.chat-toggle-btn .fa-times { display: none; }
+
+.chat-box {
+  position: fixed; bottom: 100px; right: 30px; z-index: 1999;
+  width: 340px;
+  background: var(--dark);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  transform: translateY(20px) scale(0.95);
+  opacity: 0; pointer-events: none;
+  transition: all .3s cubic-bezier(.77,0,.18,1);
+}
+.chat-box.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
+
+.chat-head {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2010 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.chat-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--gold); display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; color: var(--black);
+}
+.chat-head-info strong { display: block; font-size: 0.85rem; color: var(--white); }
+.chat-head-info span { font-size: 0.7rem; color: var(--gold); }
+.chat-status { width: 8px; height: 8px; border-radius: 50%; background: #4caf50; margin-left: auto; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.chat-messages {
+  height: 260px; overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.msg { max-width: 82%; padding: 10px 14px; border-radius: 12px; font-size: 0.8rem; line-height: 1.5; }
+.msg.bot { background: var(--card); color: #ccc; border-bottom-left-radius: 3px; align-self: flex-start; }
+.msg.user { background: var(--gold); color: var(--black); border-bottom-right-radius: 3px; align-self: flex-end; font-weight: 500; }
+
+.chat-input-area {
+  display: flex; border-top: 1px solid var(--border);
+  background: var(--card);
+}
+.chat-input-area input {
+  flex: 1; padding: 14px 16px;
+  background: transparent; border: none; outline: none;
+  color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.8rem;
+}
+.chat-input-area input::placeholder { color: var(--gray); }
+.chat-send {
+  padding: 0 18px; background: var(--gold); border: none;
+  color: var(--black); cursor: pointer; font-size: 0.9rem;
+  transition: background .2s;
+}
+.chat-send:hover { background: var(--gold-light); }
+
+/* ── Mobile ── */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  nav.scrolled { padding: 12px 24px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  section { padding: 70px 24px; }
+  .map-section { padding: 70px 24px; }
+  footer { padding: 40px 24px; }
+  .info-grid, .prices-layout, .map-layout { grid-template-columns: 1fr; gap: 40px; }
+  .services-grid { grid-template-columns: 1fr; gap: 1px; }
+  .info-cards { grid-template-columns: 1fr 1fr; }
+  .calc-result-box { position: static; }
+  .hero-title { font-size: 4rem; letter-spacing: 6px; }
+}
+
+.mobile-nav {
+  display: none;
+  position: fixed; inset: 0; z-index: 5000;
+  background: rgba(13,13,13,0.98);
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 40px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem; color: var(--white); text-decoration: none;
+  letter-spacing: 4px; transition: color .3s;
+}
+.mobile-nav a:hover { color: var(--gold); }
+.mobile-close {
+  position: absolute; top: 24px; right: 24px;
+  font-size: 1.8rem; color: var(--gray); cursor: pointer;
+  background: none; border: none;
+}
+
+/* ── Animations on scroll ── */
+.reveal { opacity: 0; transform: translateY(40px); transition: all .8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Language Toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('ro')" id="btn-ro">RO</button>
+  <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">RU</button>
+</div>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo"><i class="fas fa-scissors"></i> AGERIS</a>
+  <ul class="nav-links">
+    <li><a href="#info" data-ro="Info" data-ru="О нас">Info</a></li>
+    <li><a href="#servicii" data-ro="Servicii" data-ru="Услуги">Servicii</a></li>
+    <li><a href="#preturi" data-ro="Prețuri" data-ru="Цены">Prețuri</a></li>
+    <li><a href="#program" data-ro="Program" data-ru="График">Program</a></li>
+    <li><a href="#contact" data-ro="Contact" data-ru="Контакт">Contact</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
+  <a href="#info" onclick="closeMobileNav()" data-ro="Info" data-ru="О нас">Info</a>
+  <a href="#servicii" onclick="closeMobileNav()" data-ro="Servicii" data-ru="Услуги">Servicii</a>
+  <a href="#preturi" onclick="closeMobileNav()" data-ro="Prețuri" data-ru="Цены">Prețuri</a>
+  <a href="#program" onclick="closeMobileNav()" data-ro="Program" data-ru="График">Program</a>
+  <a href="#contact" onclick="closeMobileNav()" data-ro="Contact" data-ru="Контакт">Contact</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <i class="fas fa-scissors hero-scissors"></i>
+    <h1 class="hero-title">AGE<span>RIS</span></h1>
+    <p class="hero-sub" data-ro="Salon de Frumusețe · Chișinău" data-ru="Салон красоты · Кишинёв">Salon de Frumusețe · Chișinău</p>
+    <div class="hero-divider"></div>
+    <a href="#servicii" class="btn-primary">
+      <span data-ro="Descoperă Serviciile" data-ru="Наши услуги">Descoperă Serviciile</span>
+    </a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span data-ro="Scroll" data-ru="Вниз">Scroll</span>
+  </div>
+</section>
+
+<!-- ══ INFO ══ -->
+<section class="info-section" id="info">
+  <div class="info-grid">
+    <div class="info-text reveal">
+      <p class="section-label" data-ro="Despre noi" data-ru="О нас">Despre noi</p>
+      <h2 class="section-title" data-ro="Arta frumuseții,<br><em>redefinită</em>" data-ru="Искусство красоты,<br><em>переосмысленное</em>">Arta frumuseții,<br><em>redefinită</em></h2>
+      <div class="section-divider"></div>
+      <p data-ro="AGERIS este un salon de frumusețe premium din Chișinău, dedicat excelenței și rafinamentului. Oferim o gamă completă de servicii pentru îngrijirea părului, unghiilor și look-ului tău general, într-un spațiu elegant și relaxant."
+         data-ru="AGERIS — это премиальный салон красоты в Кишинёве, посвящённый совершенству и изысканности. Мы предлагаем полный спектр услуг по уходу за волосами, ногтями и вашим общим образом в элегантной и расслабляющей обстановке.">
+        AGERIS este un salon de frumusețe premium din Chișinău, dedicat excelenței și rafinamentului. Oferim o gamă completă de servicii pentru îngrijirea părului, unghiilor și look-ului tău general, într-un spațiu elegant și relaxant.
+      </p>
+      <p data-ro="Echipa noastră de specialiști calificați utilizează produse de top și tehnici moderne pentru a-ți oferi cel mai bun rezultat. De la tunsori și vopsire până la tratamente SPA și nail art — la AGERIS totul este gândit pentru tine."
+         data-ru="Наша команда квалифицированных специалистов использует продукты высшего класса и современные техники, чтобы обеспечить наилучший результат. От стрижки и окрашивания до SPA-процедур и дизайна ногтей — в AGERIS всё сделано для вас.">
+        Echipa noastră de specialiști calificați utilizează produse de top și tehnici moderne pentru a-ți oferi cel mai bun rezultat.
+      </p>
+    </div>
+    <div class="info-cards reveal">
+      <div class="info-card">
+        <i class="fas fa-star"></i>
+        <strong data-ro="Calitate Premium" data-ru="Премиум качество">Calitate Premium</strong>
+        <span data-ro="Produse de top" data-ru="Топ-продукты">Produse de top</span>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-users"></i>
+        <strong data-ro="Echipă Expertă" data-ru="Команда экспертов">Echipă Expertă</strong>
+        <span data-ro="Specialiști calificați" data-ru="Квалифицированные специалисты">Specialiști calificați</span>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-clock"></i>
+        <strong data-ro="7 Zile / Săptămână" data-ru="7 дней в неделю">7 Zile / Săpt.</strong>
+        <span data-ro="Mereu pentru tine" data-ru="Всегда для вас">Mereu pentru tine</span>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-heart"></i>
+        <strong data-ro="Experiență Unică" data-ru="Уникальный опыт">Experiență Unică</strong>
+        <span data-ro="Atmosferă exclusivă" data-ru="Эксклюзивная атмосфера">Atmosferă exclusivă</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICII ══ -->
+<section class="services-section" id="servicii">
+  <div style="max-width:1100px; margin:0 auto;">
+    <p class="section-label" data-ro="Ce oferim" data-ru="Что мы предлагаем">Ce oferim</p>
+    <h2 class="section-title" data-ro="Serviciile <em>noastre</em>" data-ru="Наши <em>услуги</em>">Serviciile <em>noastre</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="services-grid">
+    <div class="service-item reveal">
+      <span class="service-num">01</span>
+      <i class="fas fa-cut service-icon"></i>
+      <h3 data-ro="Frizuri Femei / Bărbați" data-ru="Стрижки женские / мужские">Frizuri Femei / Bărbați</h3>
+      <p data-ro="Tuns, modelat și stilizat pentru orice tip de păr și personalitate." data-ru="Стрижка, моделирование и укладка для любого типа волос и личности.">Tuns, modelat și stilizat pentru orice tip de păr și personalitate.</p>
+    </div>
+    <div class="service-item reveal">
+      <span class="service-num">02</span>
+      <i class="fas fa-palette service-icon"></i>
+      <h3 data-ro="Vopsire / Șuvițe (Mélaj)" data-ru="Окрашивание / Мелирование">Vopsire / Șuvițe (Mélaj)</h3>
+      <p data-ro="Tehnici moderne de colorare: balayage, ombre, highlights și vopsire integrală." data-ru="Современные техники окрашивания: балаяж, омбре, хайлайтс и полное окрашивание.">Tehnici moderne: balayage, ombre, highlights și vopsire integrală.</p>
+    </div>
+    <div class="service-item reveal">
+      <span class="service-num">03</span>
+      <i class="fas fa-wind service-icon"></i>
+      <h3 data-ro="Aranjare / Coafură" data-ru="Укладка / Причёска">Aranjare / Coafură</h3>
+      <p data-ro="Coafare profesională pentru ocazii speciale sau stil zilnic impecabil." data-ru="Профессиональная укладка для особых случаев или безупречного ежедневного стиля.">Coafare profesională pentru ocazii speciale sau stil zilnic impecabil.</p>
+    </div>
+    <div class="service-item reveal">
+      <span class="service-num">04</span>
+      <i class="fas fa-magic service-icon"></i>
+      <h3 data-ro="Make-up" data-ru="Макияж">Make-up</h3>
+      <p data-ro="Machiaj de zi, de seară sau pentru events speciale — executat cu măiestrie." data-ru="Дневной, вечерний или специальный макияж — выполненный с мастерством.">Machiaj de zi, de seară sau pentru events speciale — executat cu măiestrie.</p>
+    </div>
+    <div class="service-item reveal">
+      <span class="service-num">05</span>
+      <i class="fas fa-eye service-icon"></i>
+      <h3 data-ro="Stilizare & Vopsire Sprâncene" data-ru="Стилизация и окрашивание бровей">Stilizare & Vopsire Sprâncene</h3>
+      <p data-ro="Modelare, epilare și vopsire a sprâncenelor pentru un look definit și armonios." data-ru="Оформление, эпиляция и окрашивание бровей для чёткого и гармоничного образа.">Modelare, epilare și vopsire a sprâncenelor pentru un look definit.</p>
+    </div>
+    <div class="service-item reveal">
+      <span class="service-num">06</span>
+      <i class="fas fa-spa service-icon"></i>
+      <h3 data-ro="Tratament SPA pentru Păr" data-ru="SPA-процедуры для волос">Tratament SPA pentru Păr</h3>
+      <p data-ro="Ritualuri profunde de hidratare și regenerare pentru un păr strălucitor și sănătos." data-ru="Глубокие процедуры увлажнения и восстановления для блестящих и здоровых волос.">Ritualuri de hidratare și regenerare pentru un păr strălucitor și sănătos.</p>
+    </div>
+    <div class="service-item reveal">
+      <span class="service-num">07</span>
+      <i class="fas fa-leaf service-icon"></i>
+      <h3 data-ro="Îndreptare: Nanoplastie / Keratină / Botox" data-ru="Выпрямление: нанопластика / кератин / ботокс">Îndreptare: Nanoplastie / Keratină / Botox</h3>
+      <p data-ro="Tratamente profesionale pentru îndreptarea și revitalizarea profundă a firului de păr." data-ru="Профессиональные процедуры для выпрямления и глубокого восстановления волос.">Tratamente profesionale pentru îndreptarea și revitalizarea profundă.</p>
+    </div>
+    <div class="service-item reveal">
+      <span class="service-num">08</span>
+      <i class="fas fa-hand-sparkles service-icon"></i>
+      <h3 data-ro="Manichiură / Pedichiură" data-ru="Маникюр / Педикюр">Manichiură / Pedichiură</h3>
+      <p data-ro="Îngrijire completă a unghiilor — clasic, gel, semipermanent, nail art și design exclusiv." data-ru="Полный уход за ногтями — классический, гелевый, полупостоянный, nail art и эксклюзивный дизайн.">Îngrijire completă a unghiilor — clasic, gel, semipermanent, nail art.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PREȚURI / CALCULATOR ══ -->
+<section class="prices-section" id="preturi">
+  <div class="prices-inner">
+    <p class="section-label" data-ro="Calculator" data-ru="Калькулятор">Calculator</p>
+    <h2 class="section-title" data-ro="Estimează <em>prețul</em>" data-ru="Рассчитайте <em>стоимость</em>">Estimează <em>prețul</em></h2>
+    <div class="section-divider"></div>
+    <div class="prices-layout">
+      <div class="price-list" id="priceList">
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="200">
+          <span class="price-name" data-ro="Tuns femei (simplu)" data-ru="Стрижка женская (простая)">Tuns femei (simplu)</span>
+          <span class="price-dots"></span>
+          <span class="price-value">200 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="350">
+          <span class="price-name" data-ro="Tuns femei (cu coafat)" data-ru="Стрижка женская (с укладкой)">Tuns femei (cu coafat)</span>
+          <span class="price-dots"></span>
+          <span class="price-value">350 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="150">
+          <span class="price-name" data-ro="Tuns bărbați" data-ru="Стрижка мужская">Tuns bărbați</span>
+          <span class="price-dots"></span>
+          <span class="price-value">150 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="500">
+          <span class="price-name" data-ro="Vopsire integrală" data-ru="Полное окрашивание">Vopsire integrală</span>
+          <span class="price-dots"></span>
+          <span class="price-value">500+ lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="700">
+          <span class="price-name" data-ro="Balayage / Mélaj" data-ru="Балаяж / Мелирование">Balayage / Mélaj</span>
+          <span class="price-dots"></span>
+          <span class="price-value">700+ lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="200">
+          <span class="price-name" data-ro="Coafat / Aranjat" data-ru="Укладка / Причёска">Coafat / Aranjat</span>
+          <span class="price-dots"></span>
+          <span class="price-value">200 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="400">
+          <span class="price-name" data-ro="Make-up zi" data-ru="Дневной макияж">Make-up zi</span>
+          <span class="price-dots"></span>
+          <span class="price-value">400 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="600">
+          <span class="price-name" data-ro="Make-up seară / eveniment" data-ru="Вечерний макияж / мероприятие">Make-up seară / eveniment</span>
+          <span class="price-dots"></span>
+          <span class="price-value">600 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="150">
+          <span class="price-name" data-ro="Stilizare sprâncene" data-ru="Оформление бровей">Stilizare sprâncene</span>
+          <span class="price-dots"></span>
+          <span class="price-value">150 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="100">
+          <span class="price-name" data-ro="Vopsire sprâncene" data-ru="Окрашивание бровей">Vopsire sprâncene</span>
+          <span class="price-dots"></span>
+          <span class="price-value">100 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="600">
+          <span class="price-name" data-ro="Tratament SPA păr" data-ru="SPA-процедура для волос">Tratament SPA păr</span>
+          <span class="price-dots"></span>
+          <span class="price-value">600 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="1200">
+          <span class="price-name" data-ro="Nanoplastie / Keratină" data-ru="Нанопластика / Кератин">Nanoplastie / Keratină</span>
+          <span class="price-dots"></span>
+          <span class="price-value">1200+ lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="800">
+          <span class="price-name" data-ro="Botox păr" data-ru="Ботокс для волос">Botox păr</span>
+          <span class="price-dots"></span>
+          <span class="price-value">800+ lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="250">
+          <span class="price-name" data-ro="Manichiură clasică" data-ru="Классический маникюр">Manichiură clasică</span>
+          <span class="price-dots"></span>
+          <span class="price-value">250 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="350">
+          <span class="price-name" data-ro="Manichiură gel / semipermanent" data-ru="Маникюр гель / полупостоянный">Manichiură gel / semipermanent</span>
+          <span class="price-dots"></span>
+          <span class="price-value">350 lei</span>
+        </label>
+
+        <label class="price-label">
+          <input type="checkbox" class="price-check" value="400">
+          <span class="price-name" data-ro="Pedichiură" data-ru="Педикюр">Pedichiură</span>
+          <span class="price-dots"></span>
+          <span class="price-value">400 lei</span>
+        </label>
+
+      </div>
+
+      <div class="calc-result-box reveal">
+        <span class="result-label" data-ro="Total estimat" data-ru="Итого ориентировочно">Total estimat</span>
+        <div class="calc-total"><span id="calcTotal">0</span> <span class="calc-currency">lei</span></div>
+        <p class="calc-note" data-ro="* Prețurile sunt orientative și pot varia în funcție de lungimea și tipul de păr. Prețul final va fi stabilit la consultație." data-ru="* Цены ориентировочные и могут варьироваться в зависимости от длины и типа волос. Окончательная цена будет установлена на консультации.">
+          * Prețurile sunt orientative și pot varia în funcție de lungimea și tipul de păr.
+        </p>
+        <button class="calc-reset" onclick="resetCalc()" data-ro="Resetează selecția" data-ru="Сбросить выбор">Resetează selecția</button>
+        <button class="btn-primary" onclick="openChat()" style="width:100%; text-align:center; display:block;">
+          <span data-ro="Programează-te acum" data-ru="Записаться сейчас">Programează-te acum</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROGRAM ══ -->
+<section class="schedule-section" id="program">
+  <div class="schedule-inner">
+    <p class="section-label" style="text-align:center" data-ro="Orar" data-ru="График работы">Orar</p>
+    <h2 class="section-title" style="text-align:center" data-ro="Program de <em>lucru</em>" data-ru="Часы <em>работы</em>">Program de <em>lucru</em></h2>
+    <div class="section-divider" style="margin:0 auto 50px;"></div>
+    <div class="schedule-grid reveal">
+      <div class="schedule-row">
+        <span class="schedule-day" data-ro="Luni – Sâmbătă" data-ru="Понедельник – Суббота">Luni – Sâmbătă</span>
+        <div class="schedule-dot"></div>
+        <span class="schedule-time">09:00 – 19:00</span>
+      </div>
+      <div class="schedule-row">
+        <span class="schedule-day" data-ro="Duminică" data-ru="Воскресенье">Duminică</span>
+        <div class="schedule-dot"></div>
+        <span class="schedule-time">09:00 – 17:00</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT / MAP ══ -->
+<section class="map-section" id="contact">
+  <div class="map-inner">
+    <p class="section-label" data-ro="Unde ne găsești" data-ru="Где нас найти">Unde ne găsești</p>
+    <h2 class="section-title" data-ro="Contact & <em>Locație</em>" data-ru="Контакт & <em>Местоположение</em>">Contact & <em>Locație</em></h2>
+    <div class="section-divider"></div>
+    <div class="map-layout">
+      <a class="map-link reveal"
+         href="https://www.google.com/maps/search/str.+Petru+Zadnipru+2%2F1+Chisinau"
+         target="_blank" rel="noopener">
+        <div class="map-placeholder">
+          <i class="fas fa-map-marker-alt"></i>
+          <p data-ro="str. Petru Zadnipru 2/1, Chișinău" data-ru="ул. Петру Задніпру 2/1, Кишинёв">str. Petru Zadnipru 2/1, Chișinău</p>
+          <p style="font-size:0.7rem; color:#666;" data-ro="Apasă pentru a deschide în Google Maps" data-ru="Нажмите, чтобы открыть в Google Maps">Apasă pentru a deschide în Google Maps</p>
+        </div>
+        <div class="map-overlay">
+          <span data-ro="Deschide Harta" data-ru="Открыть карту">Deschide Harta</span>
+        </div>
+      </a>
+
+      <div class="contact-details reveal">
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-phone"></i></div>
+          <div class="contact-text">
+            <strong data-ro="Telefon" data-ru="Телефон">Telefon</strong>
+            <a href="tel:060218182">060 218 182</a>
+            <a href="tel:069294347">069 294 347</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="contact-text">
+            <strong data-ro="Adresă" data-ru="Адрес">Adresă</strong>
+            <p data-ro="str. Petru Zadnipru 2/1" data-ru="ул. Петру Задніпру 2/1">str. Petru Zadnipru 2/1</p>
+            <p data-ro="Chișinău, Moldova" data-ru="Кишинёв, Молдова">Chișinău, Moldova</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-clock"></i></div>
+          <div class="contact-text">
+            <strong data-ro="Program" data-ru="График">Program</strong>
+            <p data-ro="Lun–Sâm: 09:00–19:00" data-ru="Пн–Сб: 09:00–19:00">Lun–Sâm: 09:00–19:00</p>
+            <p data-ro="Dum: 09:00–17:00" data-ru="Вс: 09:00–17:00">Dum: 09:00–17:00</p>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="https://www.instagram.com" target="_blank" class="social-link" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.facebook.com" target="_blank" class="social-link" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="tel:060218182" class="social-link" title="Sună acum">
+            <i class="fas fa-phone"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-logo">✦ AGERIS</div>
+  <p class="footer-copy" data-ro="© 2025 AGERIS Salon de Frumusețe. Toate drepturile rezervate." data-ru="© 2025 AGERIS Салон красоты. Все права защищены.">© 2025 AGERIS Salon de Frumusețe. Toate drepturile rezervate.</p>
+  <div class="social-links">
+    <a href="https://www.instagram.com" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+  </div>
+</footer>
+
+<!-- ══ CHAT ══ -->
+<button class="chat-toggle-btn" id="chatToggleBtn" onclick="toggleChat()">
+  <i class="fas fa-comments"></i>
+  <i class="fas fa-times"></i>
+</button>
+<div class="chat-box" id="chatBox">
+  <div class="chat-head">
+    <div class="chat-avatar"><i class="fas fa-scissors"></i></div>
+    <div class="chat-head-info">
+      <strong>AGERIS</strong>
+      <span data-ro="Salon de Frumusețe" data-ru="Салон красоты">Salon de Frumusețe</span>
+    </div>
+    <div class="chat-status"></div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg bot" data-ro="Bună ziua! 👋 Bine ați venit la AGERIS. Cu ce vă putem ajuta?" data-ru="Добрый день! 👋 Добро пожаловать в AGERIS. Чем можем помочь?">
+      Bună ziua! 👋 Bine ați venit la AGERIS. Cu ce vă putem ajuta?
+    </div>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" id="chatInput" placeholder="Scrieți mesajul..." onkeypress="handleChatKey(event)">
+    <button class="chat-send" onclick="sendChatMsg()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<script>
+// ── Cursor ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+(function animRing(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); })();
+
+// ── Navbar scroll ──
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  revealOnScroll();
+});
+
+// ── Mobile nav ──
+document.getElementById('hamburger').onclick = () => document.getElementById('mobileNav').classList.add('open');
+document.getElementById('mobileClose').onclick = closeMobileNav;
+function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
+
+// ── Reveal on scroll ──
+function revealOnScroll() {
+  document.querySelectorAll('.reveal').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 80) el.classList.add('visible');
+  });
+}
+revealOnScroll();
+
+// ── Language ──
+let currentLang = 'ro';
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-ro').classList.toggle('active', lang==='ro');
+  document.getElementById('btn-ru').classList.toggle('active', lang==='ru');
+
+  document.querySelectorAll('[data-ro]').forEach(el => {
+    const val = el.getAttribute('data-'+lang);
+    if (!val) return;
+    if (el.tagName === 'INPUT') { el.placeholder = val; return; }
+    // For elements containing child tags (like <em>), use innerHTML
+    if (val.includes('<')) { el.innerHTML = val; return; }
+    el.textContent = val;
+  });
+
+  // Chat welcome message
+  const welcome = lang === 'ru'
+    ? 'Добрый день! 👋 Добро пожаловать в AGERIS. Чем можем помочь?'
+    : 'Bună ziua! 👋 Bine ați venit la AGERIS. Cu ce vă putem ajuta?';
+  const msgs = document.querySelectorAll('.msg.bot');
+  if (msgs.length) msgs[0].textContent = welcome;
+
+  // Chat input placeholder
+  document.getElementById('chatInput').placeholder = lang === 'ru' ? 'Напишите сообщение...' : 'Scrieți mesajul...';
+}
+
+// ── Price Calculator ──
+const priceList = document.getElementById('priceList');
+priceList.addEventListener('change', calcTotal);
+
+function calcTotal() {
+  let total = 0;
+  priceList.querySelectorAll('.price-check:checked').forEach(cb => total += parseInt(cb.value)||0);
+  animNum(document.getElementById('calcTotal'), total);
+}
+
+function animNum(el, end) {
+  const start = parseInt(el.textContent)||0;
+  const dur = 400; const t0 = performance.now();
+  (function up(now){
+    const p = Math.min((now-t0)/dur, 1);
+    const ease = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(start + ease*(end-start));
+    if (p<1) requestAnimationFrame(up);
+  })(performance.now());
+}
+
+function resetCalc() {
+  priceList.querySelectorAll('.price-check').forEach(cb => cb.checked = false);
+  animNum(document.getElementById('calcTotal'), 0);
+}
+
+// ── Chat ──
+const chatBotReplies = {
+  ro: {
+    program: 'Programul nostru: Luni–Sâmbătă 09:00–19:00, Duminică 09:00–17:00. 🕐',
+    pret: 'Puteți folosi calculatorul nostru de prețuri pentru o estimare. Prețul final depinde de tipul și lungimea părului.',
+    programare: 'Vă rugăm să ne contactați la 060 218 182 sau 069 294 347 pentru programare. 📞',
+    adresa: 'Ne găsiți pe str. Petru Zadnipru 2/1, Chișinău. 📍',
+    servicii: 'Oferim: frizuri, vopsire, coafat, make-up, stilizare sprâncene, tratament SPA, nanoplastie, keratină, manichiură și pedichiură. ✨',
+    default: 'Vă mulțumim pentru mesaj! Pentru detalii suplimentare, vă rugăm să ne sunați la 060 218 182. 💛'
+  },
+  ru: {
+    program: 'Наш график: Понедельник–Суббота 09:00–19:00, Воскресенье 09:00–17:00. 🕐',
+    pret: 'Воспользуйтесь нашим калькулятором цен для оценки стоимости. Итоговая цена зависит от типа и длины волос.',
+    programare: 'Позвоните нам по номеру 060 218 182 или 069 294 347 для записи. 📞',
+    adresa: 'Мы находимся по адресу: ул. Петру Задніпру 2/1, Кишинёв. 📍',
+    servicii: 'Мы предлагаем: стрижки, окрашивание, укладку, макияж, оформление бровей, SPA-процедуры, нанопластику, кератин, маникюр и педикюр. ✨',
+    default: 'Спасибо за сообщение! Для дополнительных деталей позвоните нам: 060 218 182. 💛'
+  }
+};
+
+function toggleChat() {
+  const box = document.getElementById('chatBox');
+  const btn = document.getElementById('chatToggleBtn');
+  box.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+function openChat() {
+  document.getElementById('chatBox').classList.add('open');
+  document.getElementById('chatToggleBtn').classList.add('open');
+}
+
+function handleChatKey(e) { if (e.key === 'Enter') sendChatMsg(); }
+
+function sendChatMsg() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  appendMsg('user', msg);
+  input.value = '';
+  setTimeout(() => appendMsg('bot', getBotReply(msg)), 700);
+}
+
+function appendMsg(type, text) {
+  const el = document.createElement('div');
+  el.className = 'msg ' + type;
+  el.textContent = text;
+  const container = document.getElementById('chatMessages');
+  container.appendChild(el);
+  container.scrollTop = container.scrollHeight;
+}
+
+function getBotReply(msg) {
+  const lower = msg.toLowerCase();
+  const r = chatBotReplies[currentLang];
+  if (/program|orar|lucr|час|работ|график/i.test(lower)) return r.program;
+  if (/preț|cost|cât|цен|стоим|сколько/i.test(lower)) return r.pret;
+  if (/program|записат|programar|rezerv/i.test(lower)) return r.programare;
+  if (/adres|unde|где|адрес|locati/i.test(lower)) return r.adresa;
+  if (/servicii|услуг|oferi|что/i.test(lower)) return r.servicii;
+  return r.default;
+}
+</script>
+</body>
+</html>
